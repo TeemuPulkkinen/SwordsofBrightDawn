@@ -11,7 +11,10 @@ public class PlayerController : MonoBehaviour
     // hyppyvoima Y-akselin suunnassa
     public float jumpForce;
 
+    // Hyökkäysmuuttujia
     private bool attack = false;
+    public Transform attackAudioPoint;
+    public GameObject attackSound;
 
     // Näppäinmuuttujat
     public KeyCode left;
@@ -28,10 +31,10 @@ public class PlayerController : MonoBehaviour
     public float groundCheckRadius;
     public LayerMask whatIsGround; // kokonaisluku 0-31
     public bool isGround; // Jos ollaan maassa, niin isGround = true
-    
-
+   
     // Yhteys animaattoriin
     private Animator anim;
+
 
     
 
@@ -52,9 +55,6 @@ public class PlayerController : MonoBehaviour
     {
         // Tarkistetaan ollaanko maassa vai ilmassa
         isGround = Physics2D.OverlapCircle(groundCheckPoint.position, groundCheckRadius, whatIsGround);
-        
-        //Testi
-        print("Maassa: " + isGround);
         
         // Pelihahmon liike
         if (Input.GetKey(left))
@@ -85,6 +85,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(attackKey) && isGround)
         {
             attack = true;
+
+            GameObject attackSoundPlay = Instantiate(attackSound, attackAudioPoint.position, attackAudioPoint.rotation);
+
+            attackSoundPlay.transform.localScale = transform.localScale;
         }
         else
         {
